@@ -2,9 +2,8 @@
 
 namespace SimpleTrader.Domain.Models
 {
-    public class Account
+    public class Account : DomainObject
     {
-        public int Id { get; set; }
         public User AccountHolder { get; set; }
         public decimal Balance { get; set; }
         public IEnumerable<AssetTransaction> AssetTransactions { get; set; }
