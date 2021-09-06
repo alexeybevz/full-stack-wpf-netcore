@@ -1,4 +1,6 @@
 ﻿using System.Windows;
+using SimpleTrader.Domain.Models;
+using SimpleTrader.FinancialModelingPrepAPI.Services;
 using SimpleTrader.WPF.ViewModels;
 
 namespace SimpleTrader.WPF
@@ -10,6 +12,11 @@ namespace SimpleTrader.WPF
     {
         protected override void OnStartup(StartupEventArgs e)
         {
+            new MajorIndexService().GetMajorIndex(MajorIndexType.AAPL).ContinueWith(task =>
+            {
+                var index = task.Result;
+            });
+
             var window = new MainWindow();
             window.DataContext = new MainViewModel();
             window.Show();
