@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using SimpleTrader.Domain.Models;
 using SimpleTrader.Domain.Services;
 
@@ -13,15 +9,15 @@ namespace SimpleTrader.FinancialModelingPrepAPI.Services
     {
         public async Task<MajorIndex> GetMajorIndex(MajorIndexType indexType)
         {
-            using (var client = new HttpClient())
+            using (var client = new FinancialModelingPrepHttpClient())
             {
-                string uri = $"https://financialmodelingprep.com/api/v3/profile/{GetUriSuffix(indexType)}?apikey=09c75fbb0acea9af68b8045f15c59b80";
+                string uri = $"profile/{GetUriSuffix(indexType)}";
+                uri = client.AddApiKeyToEnd(uri);
 
                 var response = await client.GetAsync(uri);
                 var jsonResponse = await response.Content.ReadAsStringAsync();
 
-                var majorIndexes = JsonConvert.DeserializeObject<IEnumerable<MajorIndex>>(jsonResponse);
-                var majorIndex = majorIndexes.FirstOrDefault();
+                var majorIndex = await client.GetAsync<MajorIndex>(uri);
                 majorIndex.Type = indexType;
                 return majorIndex;
             }
@@ -38,7 +34,7 @@ namespace SimpleTrader.FinancialModelingPrepAPI.Services
                 case MajorIndexType.MSFT:
                     return "MSFT";
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(indexType), indexType, null);
+                    throw new Exception("MajorIndexType does not have a suffix defined.");
             }
         }
     }
