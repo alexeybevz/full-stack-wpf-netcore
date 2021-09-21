@@ -28,6 +28,7 @@ namespace SimpleTrader.WPF.Commands
             try
             {
                 decimal stockPrice = await _stockPriceService.GetPrice(_viewModel.Symbol);
+                _viewModel.SearchResultSymbol = _viewModel.Symbol.ToUpper();
                 _viewModel.StockPrice = stockPrice;
             }
             catch (Exception e)

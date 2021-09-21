@@ -10,6 +10,7 @@ namespace SimpleTrader.WPF.ViewModels
         private string _symbol;
         private decimal _stockPrice;
         private int _sharesToBuy;
+        private string _searchResultSymbol = string.Empty;
 
         public string Symbol
         {
@@ -28,6 +29,7 @@ namespace SimpleTrader.WPF.ViewModels
             {
                 _stockPrice = value;
                 OnPropertyChanged(nameof(StockPrice));
+                OnPropertyChanged(nameof(TotalPrice));
             }
         }
 
@@ -39,6 +41,16 @@ namespace SimpleTrader.WPF.ViewModels
                 _sharesToBuy = value;
                 OnPropertyChanged(nameof(SharesToBuy));
                 OnPropertyChanged(nameof(TotalPrice));
+            }
+        }
+
+        public string SearchResultSymbol
+        {
+            get => _searchResultSymbol;
+            set
+            {
+                _searchResultSymbol = value;
+                OnPropertyChanged(nameof(SearchResultSymbol));
             }
         }
 
